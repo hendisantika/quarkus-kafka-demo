@@ -9,6 +9,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.annotations.SseElementType;
 import org.reactivestreams.Publisher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,5 +37,15 @@ public class QuoteEndpoint {
     @SseElementType(MediaType.APPLICATION_JSON)
     public Publisher<Quote> stream() {
         return quotes;
+    }
+
+    @GET
+    @Path("/init")
+    public List<Quote> getList() {
+        List<Quote> list = new ArrayList();
+        for (String ticker : stocks) {
+            list.add(new Quote(ticker));
+        }
+        return list;
     }
 }
