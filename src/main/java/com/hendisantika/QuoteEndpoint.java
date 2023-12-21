@@ -1,8 +1,12 @@
 package com.hendisantika;
 
 import io.smallrye.reactive.messaging.annotations.Channel;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.resteasy.annotations.SseElementType;
 import org.reactivestreams.Publisher;
 
 import java.util.List;
@@ -25,4 +29,12 @@ public class QuoteEndpoint {
 
     @ConfigProperty(name = "stock.tickers")
     List<String> stocks;
+
+    @GET
+    @Path("/stream")
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    @SseElementType(MediaType.APPLICATION_JSON)
+    public Publisher<Quote> stream() {
+        return quotes;
+    }
 }
