@@ -1,8 +1,11 @@
 package com.hendisantika;
 
+import io.smallrye.mutiny.Multi;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -22,4 +25,10 @@ public class QuoteGenerator {
 
     @ConfigProperty(name = "stock.tickers")
     List<String> stocks;
+
+    @Outgoing("stock-quote")
+    public Multi<Quote> generate() {
+        return Multi.createFrom().ticks().every(Duration.ofSeconds(1)).map(n -> generateQuote());
+    }
+
 }
