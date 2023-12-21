@@ -54,4 +54,12 @@ public class QuoteGenerator {
 
         return q;
     }
+
+    private int getCounter() {
+        counter++;
+        if (counter == stocks.size()) {
+            counter = 0;
+        }
+        return counter;
+    }
 }
